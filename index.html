@@ -191,11 +191,11 @@
   <div class="machine-toggle">
     <button class="machine-btn active" data-m="myjug5" onclick="setMachine('myjug5')">
       マイジャグラー5
-      <small>3000G/4000G:1/250 ・ 5000G:1/294</small>
+      <small>3000G:1/250 ・4000G:1/250 ・5000G:1/263</small>
     </button>
     <button class="machine-btn" data-m="aimjug" onclick="setMachine('aimjug')">
       アイムジャグラー
-      <small>3000〜5000G:1/250 一定</small>
+      <small>3000G:1/250 ・4000G:1/267 ・5000G:1/263</small>
     </button>
   </div>
 
@@ -205,18 +205,18 @@
       <input type="number" id="gcount" inputmode="numeric" placeholder="例: 4200" oninput="update()">
     </div>
     <div class="field">
-      <label for="hits">合算回数（BIG+REGの合計）</label>
+      <label for="hits">REG回数（レギュラーの合計）</label>
       <input type="number" id="hits" inputmode="numeric" placeholder="例: 15" oninput="update()">
     </div>
   </div>
 
   <div class="result empty" id="result">
-    G数と合算回数を入力すると判定します
+    G数とREG回数を入力すると判定します
   </div>
 
   <div class="card">
     <table class="ref">
-      <caption>設定した機種のボーダー基準値</caption>
+      <caption>設定した機種のボーダー基準値（REG回数）</caption>
       <thead>
         <tr><th>G数</th><th>必要回数</th><th>確率</th></tr>
       </thead>
@@ -225,7 +225,7 @@
   </div>
 
   <footer>
-    ボーダーは「3000G・4000G・5000G」の3点をもとに、区間ごとの傾きで比例計算しています。5000Gを超える区間は5000G時点の傾きをそのまま延長した参考値です。指定区間の外側は目安としてご覧ください。
+    ボーダーは「3000G・4000G・5000G」の3点をもとに、区間ごとの傾きで比例計算しています。5000Gを超える区間は5000G時点の傾きをそのまま延長した参考値です。指定区間の外側は目安としてご覧ください。判定対象はREG回数（BIGは含みません）です。
   </footer>
 
 </div>
@@ -234,11 +234,11 @@
   const BORDERS = {
     myjug5: {
       name: "マイジャグラー5",
-      points: [[3000,12],[4000,16],[5000,17]]
+      points: [[3000,12],[4000,16],[5000,19]]
     },
     aimjug: {
       name: "アイムジャグラー",
-      points: [[3000,12],[4000,16],[5000,20]]
+      points: [[3000,12],[4000,15],[5000,19]]
     }
   };
 
@@ -291,7 +291,7 @@
 
     if (!g || g<=0 || isNaN(hits)){
       resultEl.className = "result empty";
-      resultEl.innerHTML = "G数と合算回数を入力すると判定します";
+      resultEl.innerHTML = "G数とREG回数を入力すると判定します";
       return;
     }
 
@@ -311,7 +311,7 @@
       </div>
       <div class="rate-row">
         <span class="rate-num">1/${currentRate.toFixed(0)}</span>
-        <span class="rate-vs">実測（合算${hits}回）</span>
+        <span class="rate-vs">実測（REG${hits}回）</span>
       </div>
       <div class="bar-track"><div class="bar-fill" style="width:${progressPct}%"></div></div>
       <div class="detail-row">
